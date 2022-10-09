@@ -1,7 +1,6 @@
 #include <cuda_runtime.h>
 #include <stdio.h>
 
-
 #define CHECK(call){ \
     const cudaError_t error = call; \
     if(error != cudaSuccess){      \
