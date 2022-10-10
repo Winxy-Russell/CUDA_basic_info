@@ -1,7 +1,6 @@
 #include <cuda_runtime.h>
 #include <stdio.h>
 
-
 #define CHECK(call){ \
     const cudaError_t error = call; \
     if(error != cudaSuccess){      \
@@ -52,17 +51,22 @@ void getMemory(){ // assumed that the device has been selected
     printf("Total amount of constant memory:\t %lu bytes\n", (unsigned long)props.totalConstMem);
     printf("Total amount of shared memory per block:\t %lu\n", (unsigned long)props.sharedMemPerBlock);
     printf("Total number of registers per block:\t %d\n", props.regsPerBlock);
+    printf("Warp size:\t\t%d\n", props.warpSize);
     printf("Maximum memory pitch:\t %lu bytes\n", (unsigned long)props.memPitch);
 }
 
 void getInfoOfthreadsAndBlocks(){
     cudaDeviceProp props;
     cudaGetDeviceProperties(&props, dev);
-
+    printf("Maximum number of threads per block: %d\n", props.maxThreadsPerBlock);
+    printf("Maximum number of threads per multiprocessor: %d\n", props.maxThreadsPerMultiProcessor);
+    printf("Maximum sizes of each dimension of a grid: %d * %d * %d\n", props.maxGridSize[0], props.maxGridSize[1], props.maxGridSize[2]);
+    printf("Maximum sizes of each dimension of a block: %d * %d * %d\n", props.maxThreadsDim[0], props.maxThreadsDim[1], props.maxThreadsDim[2]);
 }
 
 void flow(){
     getDeviceCount();
     setReturnBestDevice();
     getMemory();
+    getInfoOfthreadsAndBlocks();
 }
